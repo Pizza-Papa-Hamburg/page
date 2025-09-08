@@ -366,40 +366,273 @@
     </div>
   </footer>
 
-  <!-- Cookie Banner -->
-  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie-Hinweis">
-    <p><strong>Cookie-Hinweis:</strong> Wir verwenden keine Tracking-Cookies. Wir speichern nur Ihre Auswahl lokal auf Ihrem Gerät, damit dieser Hinweis verschwindet.</p>
-    <div class="cookie-actions">
-      <button class="btn primary" onclick="acceptCookies()">Einverstanden</button>
-      <button class="btn" onclick="declineCookies()">Ablehnen</button>
-      <a class="btn link" href="#datenschutz">Mehr erfahren</a>
-    </div>
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie-Hinweis">
+  <p><strong>Cookie-Hinweis:</strong> Wir verwenden keine Tracking-Cookies. Wir speichern nur Ihre Auswahl lokal auf Ihrem Gerät, damit dieser Hinweis verschwindet.</p>
+  <div class="cookie-actions">
+    <button class="btn primary" onclick="acceptCookies()">Einverstanden</button>
+    <button class="btn" onclick="declineCookies()">Ablehnen</button>
+    <a class="btn link" href="#datenschutz">Mehr erfahren</a>
   </div>
+</div>
 
-  <script>
-    (function(){
-      const KEY='pp-consent';
-      const banner=document.getElementById('cookieBanner');
-      try{
-        if(!localStorage.getItem(KEY)){ banner.style.display='flex'; }
-      }catch(e){ banner.style.display='flex'; }
-      window.acceptCookies=function(){
-        try{ localStorage.setItem(KEY,'accepted'); }catch(e){}
-        banner.remove();
-      };
-      window.declineCookies=function(){
-        try{ localStorage.setItem(KEY,'declined'); }catch(e){}
-        banner.remove();
-      };
-      window.resetConsent=function(){
-        try{ localStorage.removeItem(KEY); }catch(e){}
-        location.hash='#datenschutz';
-        location.reload();
-      };
-    })();
-  </script>
+<script>
+  (function(){
+    const KEY='pp-consent';
+    const banner=document.getElementById('cookieBanner');
+    try{
+      if(!localStorage.getItem(KEY)){ banner.style.display='flex'; }
+    }catch(e){ banner.style.display='flex'; }
+    window.acceptCookies=function(){
+      try{ localStorage.setItem(KEY,'accepted'); }catch(e){}
+      banner.remove();
+    };
+    window.declineCookies=function(){
+      try{ localStorage.setItem(KEY,'declined'); }catch(e){}
+      banner.remove();
+    };
+    window.resetConsent=function(){
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      location.hash='#datenschutz';
+      location.reload();
+    };
+  })();
+</script>
 
-  <!-- Tidio Chat -->
-  <script src="//code.tidio.co/pcuk59nqlhbtqesk2i1fasj7ud9rdbwv.js" async></script>
+<!-- Pizza Papa Lux Bot START -->
+<style>
+  :root{--green:#0f3a2f;--green2:#0a2a21;--gold:#c9a667}
+  .ppx-launch{position:fixed;right:22px;bottom:22px;z-index:99999;display:flex;align-items:center;gap:10px;background:#fff;color:#0e1b16;border-radius:999px;padding:10px 14px;border:1px solid #e7ebee;box-shadow:0 14px 36px rgba(0,0,0,.18);cursor:pointer;pointer-events:auto;user-select:none}
+  .ppx-dot{width:38px;height:38px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#fff;font-size:18px}
+  .ppx-panel{position:fixed;right:22px;bottom:86px;width:420px;max-width:calc(100vw - 44px);display:none;z-index:100000;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 28px 80px rgba(0,0,0,.35)}
+  .ppx-open{display:block}
+  .ppx-h{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--green);color:#fff;border-bottom:1px solid rgba(0,0,0,.25)}
+  .ppx-title{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.3px}
+  .ppx-x{border:none;background:transparent;font-size:22px;color:#fff;cursor:pointer;opacity:.9}
+  .ppx-x:hover{opacity:1}
+  .ppx-v{padding:12px;height:360px;overflow:auto;background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)), var(--green2);color:#f7faf8}
+  .ppx-m{margin:6px 0;line-height:1.35;white-space:pre-wrap}
+  .ppx-bot{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:10px;border-radius:12px}
+  .ppx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+  .ppx-opt{display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:12px;padding:10px 12px;cursor:pointer}
+  .ppx-opt:hover{transform:translateY(-1px)}
+  .ppx-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);cursor:pointer}
+  .ppx-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:14px;padding:10px}
+  .ppx-heading{font-family:"Playfair Display",serif;margin:0 0 6px;color:#efe6d6}
+  .ppx-actions{display:flex;gap:8px;margin-top:8px}
+  .ppx-hours{display:grid;grid-template-columns:1fr auto;row-gap:4px;column-gap:12px}
+  .ppx-small{font-size:13px;opacity:.9}
+  .ppx-iconrow{display:flex;gap:8px;margin-top:4px}
+  .ppx-iconbtn{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.06);font-size:12px;font-weight:700;letter-spacing:.2px}
+</style>
+
+<!-- Launcher -->
+<div class="ppx-launch" id="ppx-launch" role="button" aria-label="Chat öffnen">
+  <div>Chatten Sie mit uns 👋</div><div class="ppx-dot">💬</div>
+</div>
+
+<!-- Panel -->
+<div class="ppx-panel" id="ppx-panel" aria-live="polite">
+  <div class="ppx-h">
+    <div class="ppx-title">Pizza Papa Hamburg</div>
+    <button class="ppx-x" id="ppx-close" aria-label="Chat schließen">×</button>
+  </div>
+  <div class="ppx-v" id="ppx-v"></div>
+</div>
+
+<script>
+(function(){
+  /* --------- KONFIG --------- */
+  const CFG = {
+    brand: "Pizza Papa Hamburg",
+    phone: "+49 40 1234567",           // echte Tel. eintragen
+    email: "pizza.papa.hamburg@outlook.de",
+    address: "Muster Str. XX, YYYYY Musterstadt",
+    socials: {
+      instagram: "https://instagram.com/pizzapapa",
+      facebook:  "https://facebook.com/pizzapapa",
+      linkedin:  "https://www.linkedin.com/company/pizzapapa"
+    },
+    hoursLines: [
+      ["Mo. - Fr.","11 - 22 Uhr"],
+      ["Sa.","13 - 24 Uhr"],
+      ["So.","15 - 21 Uhr"],
+    ],
+    closures: [{ note:"Am 25.12.2025 haben wir geschlossen." }],
+    pdfMenuUrl: "https://example.com/speisekarte.pdf",
+    pdfQAUrl:   "https://example.com/qna.pdf",
+    categories: [
+      { id:"pizza",  label:"Pizza",  icon:"🍕" },
+      { id:"pasta",  label:"Pasta",  icon:"🍝" },
+      { id:"salads", label:"Salate", icon:"🥗" }
+    ],
+    dishes: {
+      pizza: [
+        { id:"margherita",  name:"Margherita",  price:"7,50 €", info:"Tomate, Mozzarella, Basilikum – der Klassiker." },
+        { id:"salami",      name:"Salami",      price:"8,50 €", info:"Feine Rindersalami auf Tomate & Mozzarella." },
+        { id:"funghi",      name:"Funghi",      price:"8,50 €", info:"Aromatische Champignons, Mozzarella, Oregano." },
+        { id:"tonno",       name:"Tonno",       price:"9,00 €", info:"Thunfisch & rote Zwiebeln – herzhaft." },
+        { id:"vegetariana", name:"Vegetariana", price:"9,00 €", info:"Saisonales Gemüse, Tomate & Mozzarella." }
+      ],
+      pasta: [
+        { id:"aglio", name:"Aglio e Olio", price:"8,00 €", info:"Knoblauch, Olivenöl, Chili – simpel & gut." },
+        { id:"carbo", name:"Carbonara",    price:"9,50 €", info:"Originale Cremigkeit, Guanciale, Pfeffer." },
+        { id:"bolo",  name:"Bolognese",    price:"9,50 €", info:"Hausgemachte Ragù Bolognese." },
+        { id:"pesto", name:"Pesto",        price:"9,00 €", info:"Basilikumpesto, Pinienkerne, Parmesan." },
+        { id:"arrab", name:"Arrabbiata",   price:"8,50 €", info:"Tomate & Chili – pikant." }
+      ],
+      salads: [
+        { id:"caesar", name:"Caesar",          price:"8,50 €", info:"Römersalat, Croûtons, Parmesan, Caesar-Dressing." },
+        { id:"greek",  name:"Griechisch",      price:"8,50 €", info:"Feta, Oliven, Gurke, Tomate, Zwiebel." },
+        { id:"rucola", name:"Rucola-Parmesan", price:"9,00 €", info:"Rucola, Parmesanraspeln, Balsamico." },
+        { id:"chef",   name:"Chef Salad",      price:"9,50 €", info:"Gemischter Salat mit Tageszutaten." }
+      ]
+    }
+  };
+
+  /* --------- DOM-Hilfen --------- */
+  const panel  = document.getElementById("ppx-panel");
+  const launch = document.getElementById("ppx-launch");
+  const close  = document.getElementById("ppx-close");
+  const view   = document.getElementById("ppx-v");
+  const stack=[]; let current=null;
+  const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n;};
+  const scroll=()=>view.scrollTop=view.scrollHeight;
+  const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const msg=h=>view.append(el("div","ppx-m ppx-bot",h));
+  const open=()=>{panel.classList.add("ppx-open");if(!current)start();};
+  const closeP=()=>panel.classList.remove("ppx-open");
+  const reset=()=>{stack.length=0;current=null;view.innerHTML="";};
+  const back=()=>{ if(stack.length<=1){show("root");return;} stack.pop(); const prev=stack.pop(); show(prev); };
+  const go=id=>{ current=id; if(stack.at(-1)!==id) stack.push(id); };
+
+  function actions(target){
+    const row=el('div','ppx-actions');
+    const bBack=el('div','ppx-pill','← Zurück');
+    const bDone=el('div','ppx-pill','Fertig ✓');
+    bBack.addEventListener('click',()=> target==='back'? back():show('root'));
+    bDone.addEventListener('click',done);
+    row.append(bBack,bDone); view.append(row);
+  }
+  function done(){
+    msg('<div class="ppx-card">Bis zum nächsten Mal! 👋</div>');
+    scroll(); setTimeout(()=>{ closeP(); reset(); },900);
+  }
+
+  /* --------- Screens --------- */
+  const NODES={
+    root(){
+      msg(`<div class="ppx-heading">Willkommen beim ${esc(CFG.brand)} Bot</div><div>Wie können wir dir helfen?</div>`);
+      const grid=el("div","ppx-grid");
+      [
+        {label:"Öffnungszeiten",id:"hours",icon:"🕒"},
+        {label:"Kontaktdaten",id:"contact",icon:"📞"},
+        {label:"Speisen",id:"menu",icon:"🍽️"},
+        {label:"Q&As",id:"qas",icon:"❓"},
+        {label:"Reservieren",id:"reserve",icon:"📅"}
+      ].forEach(o=>{
+        const b=el("div","ppx-opt",`<span>${o.icon}</span><span>${o.label}</span>`);
+        b.addEventListener("click",()=>show(o.id)); grid.appendChild(b);
+      });
+      view.append(grid); scroll();
+    },
+    hours(){
+      const box=el('div','ppx-card');
+      box.innerHTML=`<h4 class="ppx-heading">Öffnungszeiten</h4>
+        <div class="ppx-hours">${CFG.hoursLines.map(r=>`<div>${esc(r[0])}:</div><div>${esc(r[1])}</div>`).join('')}</div>
+        ${CFG.closures?.length?`<div class="ppx-small" style="margin-top:6px">${esc(CFG.closures[0].note)}</div>`:''}`;
+      view.append(box); actions('root'); scroll();
+    },
+    contact(){
+      const box=el('div','ppx-card');
+      const s=CFG.socials||{};
+      box.innerHTML=`<h4 class="ppx-heading">Kontaktdaten</h4>
+        <div>Adresse: ${esc(CFG.address)}</div>
+        <div>Telefon: ${esc(CFG.phone)}</div>
+        <div>E-Mail: <a class="ppx-link" href="mailto:${esc(CFG.email)}">${esc(CFG.email)}</a></div>
+        <div style="margin-top:6px">Socials:</div>`;
+      view.append(box);
+      const row=el('div','ppx-iconrow');
+      const icon=(t,u)=>{const a=el('a','ppx-iconbtn',t);a.href=u||'#';a.target='_blank';a.rel='noopener';return a;};
+      row.append(icon('IG',s.instagram),icon('f',s.facebook),icon('in',s.linkedin));
+      view.append(row);
+      actions('root'); scroll();
+    },
+    menu(){
+      msg(`<div class="ppx-heading">Speisen</div>
+        <div class="ppx-pill" id="ppx-open-pdf">📄 Speisekarte als PDF</div>
+        <div style="margin:6px 0 2px">…oder wähle eine Kategorie:</div>`);
+      const grid=el("div","ppx-grid");
+      CFG.categories.forEach(cat=>{
+        const b=el("div","ppx-opt",`<span>${cat.icon}</span><span>${cat.label}</span>`);
+        b.addEventListener("click",()=>show("cat:"+cat.id)); grid.appendChild(b);
+      });
+      view.append(grid);
+      const pdfBtn=view.querySelector("#ppx-open-pdf");
+      if(pdfBtn) pdfBtn.addEventListener("click",()=>window.open(CFG.pdfMenuUrl,"_blank","noopener"));
+      actions('root'); scroll();
+    },
+    qas(){
+      const box=el('div','ppx-card');
+      box.innerHTML=`<h4 class="ppx-heading">Q&As</h4>
+        <div>FAQ als PDF: <a class="ppx-link" target="_blank" rel="noopener" href="${CFG.pdfQAUrl}">öffnen</a></div>`;
+      view.append(box); actions('root'); scroll();
+    },
+    reserve(){
+      const box=el('div','ppx-card');
+      box.innerHTML=`<h4 class="ppx-heading">Reservieren</h4>
+        <div>Wir freuen uns auf dich! Wähle eine Option:</div>`;
+      view.append(box);
+      const row=el('div','ppx-actions');
+      const call=el('a','ppx-pill','📞 Anrufen'); call.href=CFG.phone?`tel:${CFG.phone.replace(/\s/g,'')}`:'#';
+      const mail=el('a','ppx-pill','✉️ E-Mail');   mail.href=`mailto:${CFG.email}`;
+      row.append(call,mail); view.append(row);
+      actions('root'); scroll();
+    }
+  };
+
+  function nodeCategory(catId){
+    const cat=CFG.categories.find(c=>c.id===catId);
+    const list=CFG.dishes[catId]||[];
+    msg(`<div class="ppx-heading">${cat?cat.icon+" "+esc(cat.label):"Kategorie"}</div>
+         <div class="ppx-grid" id="ppx-dish-grid"></div>`);
+    const grid=view.querySelector("#ppx-dish-grid");
+    list.forEach(d=>{
+      const b=el("div","ppx-opt",`<span>➤</span><span>${esc(d.name)}</span>`);
+      b.addEventListener("click",()=>show("dish:"+catId+":"+d.id)); grid.appendChild(b);
+    });
+    actions('back'); scroll();
+  }
+  function nodeDish(catId,dishId){
+    const dish=(CFG.dishes[catId]||[]).find(d=>d.id===dishId);
+    if(!dish){ msg("Gericht nicht gefunden."); return; }
+    msg(`<div class="ppx-card">
+      <h4 class="ppx-heading">${esc(dish.name)}</h4>
+      <div class="ppx-price">${esc(dish.price)}</div>
+      <div style="margin-top:4px">${esc(dish.info)}</div>
+    </div>`);
+    actions('back'); scroll();
+  }
+
+  function show(id){
+    current=id; if((stack.at(-1)!==id)) stack.push(id);
+    if(id==="root"){ view.innerHTML=''; return NODES.root(); }
+    if(id==="hours")   return NODES.hours();
+    if(id==="contact") return NODES.contact();
+    if(id==="menu")    return NODES.menu();
+    if(id==="qas")     return NODES.qas();
+    if(id==="reserve") return NODES.reserve();
+    if(id.startsWith("cat:"))  return nodeCategory(id.split(":")[1]);
+    if(id.startsWith("dish:")) { const [,c,d]=id.split(":"); return nodeDish(c,d); }
+  }
+
+  function start(){ if(!current){ show("root"); } }
+
+  /* Events */
+  launch.addEventListener("click", open);
+  close.addEventListener("click", ()=>{ closeP(); reset(); });
+})();
+</script>
+<!-- Pizza Papa Lux Bot END -->
 </body>
 </html>
