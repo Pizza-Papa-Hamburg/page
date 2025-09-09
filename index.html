@@ -111,7 +111,6 @@
     @keyframes ppxFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
     @media (max-width:640px){.ppx-panel{width:auto;left:22px;right:22px;max-height:85vh}.ppx-v{min-height:60vh}}
 
-    /* --- selected state --- */
     .ppx-opt.ppx-selected, .ppx-pill.ppx-selected{
       background:rgba(255,255,255,.18);
       border-color:rgba(255,255,255,.45);
@@ -148,14 +147,86 @@
     </div>
   </section>
 
-  <!-- MENU (gekürzt – wie gehabt) -->
+  <!-- MENU -->
   <section id="menu">
     <div class="container">
       <h2 class="section-title">Speisekarte</h2>
       <p class="section-sub">Alle Preise sind Platzhalter (XX/YY/ZZ).</p>
 
-      <!-- deine Menü-Boxen unverändert … -->
-      <!-- … -->
+      <div class="menu-section frame">
+        <h3 class="menu-title">Antipasti – Vorspeisen</h3>
+        <ul class="menu-list">
+          <li><span class="name">Bruschetta Classica</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Caprese</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Arancini</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Antipasto Misto</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Knoblauchbrot</span><span class="dots"></span><span class="price">XX €</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section frame">
+        <h3 class="menu-title">Pizza</h3>
+        <ul class="menu-list">
+          <li><span class="name">Margherita</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Prosciutto e Funghi</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Diavola (pikant)</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Quattro Formaggi</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Verdure (Gemüse)</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Tonno e Cipolla</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Parma (Rucola &amp; Grana)</span><span class="dots"></span><span class="price">ZZ €</span></li>
+          <li><span class="name">Calzone (gefüllt)</span><span class="dots"></span><span class="price">ZZ €</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section frame">
+        <h3 class="menu-title">Pasta</h3>
+        <p class="center small"><em>Nudelsorten:</em> Spaghetti, Tortellini, Linguine, Fusilli, Penne, Rigatoni, Tagliatelle, Gnocchi, Farfalle, Bucatini</p>
+        <ul class="menu-list">
+          <li><span class="name">Pomodoro</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Arrabbiata</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Carbonara</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Bolognese</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Pesto Genovese</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Funghi (Pilze)</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Gamberi (Garnelen)</span><span class="dots"></span><span class="price">ZZ €</span></li>
+          <li><span class="name">Frutti di Mare</span><span class="dots"></span><span class="price">ZZ €</span></li>
+          <li><span class="name">Alfredo</span><span class="dots"></span><span class="price">YY €</span></li>
+          <li><span class="name">Puttanesca</span><span class="dots"></span><span class="price">YY €</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section frame">
+        <h3 class="menu-title">Getränke</h3>
+        <ul class="menu-list">
+          <li><span class="name">Mineralwasser (still/prickelnd)</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Limonata / Aranciata</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Cola / Zero</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Espresso</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Cappuccino</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Hauswein Weiß (Glas/Fl.)</span><span class="dots"></span><span class="price">XX / YY €</span></li>
+          <li><span class="name">Hauswein Rot (Glas/Fl.)</span><span class="dots"></span><span class="price">XX / YY €</span></li>
+          <li><span class="name">Prosecco (Glas)</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Pils (0,3 / 0,5)</span><span class="dots"></span><span class="price">XX / YY €</span></li>
+          <li><span class="name">Helles / Lager (Fl.)</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Alkoholfreies Bier</span><span class="dots"></span><span class="price">XX €</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section frame">
+        <h3 class="menu-title">Desserts</h3>
+        <ul class="menu-list">
+          <li><span class="name">Tiramisu</span><span class="dots"></span><span class="price">XX €</span></li>
+          <li><span class="name">Panna Cotta mit Beerensauce</span><span class="dots"></span><span class="price">XX €</span></li>
+        </ul>
+      </div>
+
+      <div class="menu-section frame">
+        <h3 class="menu-title">Beilagen &amp; Extras</h3>
+        <ul class="menu-list">
+          <li><span class="name">Dips: Aioli / Trüffel-Mayo / Chili</span><span class="dots"></span><span class="price">je XX €</span></li>
+          <li><span class="name">Parmesan / Rucola / Extra Käse</span><span class="dots"></span><span class="price">je XX €</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -198,7 +269,7 @@
     </div>
   </section>
 
-  <!-- IMPRESSUM / DATENSCHUTZ (unverändert) -->
+  <!-- IMPRESSUM -->
   <section id="impressum">
     <div class="container frame">
       <h2 class="section-title">Impressum</h2>
@@ -214,11 +285,12 @@
     </div>
   </section>
 
+  <!-- DATENSCHUTZ -->
   <section id="datenschutz">
     <div class="container frame">
       <h2 class="section-title">Datenschutzerklärung</h2>
       <p class="small">
-        Diese Website verarbeitet personenbezogene Daten nur, soweit dies zur Bereitstellung der Website erforderlich ist (Art. 6 Abs. 1 lit. f DSGVO). Beim Aufruf werden serverseitig technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, angeforderte Ressource) in Logfiles verarbeitet und nach kurzer Zeit gelöscht.
+        Diese Website verarbeitet personenbezogene Daten nur, soweit dies zur Bereitstellung der Website erforderlich ist (Art. 6 Abs. 1 lit. f DSGVO). Beim Aufruf werden serverseitig technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt, angeforderte Ressource) in Logfiles verarbeitet und nach kurzer Zeit gelöscht.
       </p>
       <p class="small"><strong>Cookies/Tracking:</strong> Es werden keine Tracking-Cookies gesetzt. Es wird lediglich Ihre Auswahl zur Cookie-Einwilligung lokal auf Ihrem Gerät gespeichert (technisch notwendig, keine Übermittlung an Dritte).</p>
       <p class="small"><strong>Schriften/Fonts:</strong> Zurzeit werden Google Fonts extern geladen. Dadurch kann Ihre IP-Adresse an Google übertragen werden. Für eine vollständig datenschutzfreundliche Lösung empfehlen wir die lokale Einbindung (Self-Hosting) der Schriftarten.</p>
@@ -273,7 +345,6 @@
   </script>
 
   <!-- Pizza Papa Lux Bot START -->
-
   <!-- Launcher -->
   <div class="ppx-launch" id="ppx-launch" role="button" aria-label="Schnellzugriff öffnen">
     <div>Reservieren &amp; mehr ✨</div><div class="ppx-dot">💬</div>
@@ -313,11 +384,11 @@
       },
       BUCKETS: { mittag:["12:00","17:30"], frueh:["18:00","20:30"], spaet:["21:00","23:59"] },
 
-      /* >>> EmailJS Werte aus deinen Screens <<< */
+      /* >>> EmailJS: deine Werte <<< */
       EMAIL:{ 
         service:"service_ais7v5f",
         toTemplate:"template_hnwo39i",        // an Restaurant
-        autoReplyTemplate:"template_m5baprd"  // an Gast
+        autoReplyTemplate:"template_m5baprd"  // an Gast (To Email = {{to_email}})
       }
     };
 
@@ -334,7 +405,6 @@
     const msg=h=>view.append(el("div","ppx-m ppx-bot ppx-appear",h));
     const closeP=()=>panel.classList.remove("ppx-open");
     const reset=()=>{stack.length=0;current=null;view.innerHTML="";};
-    const open = () => { panel.classList.add("ppx-open"); if(!current) start(); };
     const wait = (ms) => new Promise(r => setTimeout(r, ms));
     const DELAY = { short:350, medium:650, long:900, compact:450 };
 
@@ -624,40 +694,54 @@
       const bSend=el('div','ppx-pill','✉️ Anfrage senden');
       controls.append(bHome,bEdit,bSend); view.append(controls); scroll();
 
-      bSend.addEventListener('click', async ()=>{
-        bSend.textContent="Sende…"; bSend.style.pointerEvents='none';
+      /* ------------ ENTKOPPELTES SENDEN ------------ */
+      bSend.addEventListener('click', async () => {
+        bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
-        const tpl={ 
-          date:dateStr, 
-          time:`${time} Uhr`, 
-          persons:String(persons), 
-          name, 
-          phone:phone||'keine Angabe', 
-          email, 
-          message:wishes||'' 
+        const tpl = {
+          date: dateStr,
+          time: `${time} Uhr`,
+          persons: String(persons),
+          name,
+          phone: phone || 'keine Angabe',
+          email,
+          message: wishes || ''
         };
 
         console.log('EmailJS payload:', tpl);
 
-        try{
-          // 1) an Restaurant
+        let firstOk = false;
+
+        // 1) Mail an Restaurant (muss klappen)
+        try {
           await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tpl);
+          firstOk = true;
+        } catch (err) {
+          console.error('EmailJS (Restaurant) Error:', err);
+        }
 
-          // 2) an Gast (Template muss "To email" = {{to_email}} nutzen)
-          await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email });
-
-          await wait(DELAY.medium);
+        if (firstOk) {
+          // UI sofort als Erfolg behandeln
           msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); scroll();
           await wait(DELAY.short);
           msg('<div class="ppx-card">Hast du sonst noch Fragen?</div>');
           actionsHome(); scroll();
-        }catch(err){
-          console.error('EmailJS Error:', err);
+
+          // 2) Auto-Reply an Gast – Fehler nur loggen
+          try {
+            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email });
+          } catch (err) {
+            console.warn('EmailJS (Gast) Error:', err);
+          }
+        } else {
+          // Erster Send fehlgeschlagen → Fehlermeldung zeigen
           msg('<div class="ppx-card">Ups – das hat leider nicht geklappt. Bitte versuch es später erneut oder nutze <a class="ppx-link" href="mailto:'+esc(CFG.email)+'">E-Mail</a>.</div>');
           actionsHome(); scroll();
-        }finally{
-          bSend.textContent="✉️ Anfrage senden"; bSend.style.pointerEvents='';
         }
+
+        // Button wieder freigeben
+        bSend.textContent = "✉️ Anfrage senden";
+        bSend.style.pointerEvents = '';
       });
     }
 
@@ -673,10 +757,6 @@
       if(id.startsWith("dish:")) { const [,c,d]=id.split(":"); return nodeDish(c,d); }
     }
     function start(){ if(!current){ show("root"); } }
-
-    const panel  = document.getElementById("ppx-panel");
-    const launch = document.getElementById("ppx-launch");
-    const close  = document.getElementById("ppx-close");
 
     launch.addEventListener("click", ()=>{ panel.classList.add("ppx-open"); if(!current) start(); });
     close.addEventListener("click", ()=>{ panel.classList.remove("ppx-open"); stack.length=0; current=null; view.innerHTML=""; });
