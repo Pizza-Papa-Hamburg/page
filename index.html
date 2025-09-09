@@ -363,7 +363,7 @@
   <script>
   (function(){
     /* --------- INIT EMAILJS (dein Public Key) --------- */
-    emailjs.init({ publicKey: '2VkgeLKf9qV0Zf_7E' });
+    emailjs.init({ publicKey: 'J1KTj7-7VJBsV-LHc' });
 
     /* --------- CONFIG --------- */
     const CFG = {
@@ -384,11 +384,11 @@
       },
       BUCKETS: { mittag:["12:00","17:30"], frueh:["18:00","20:30"], spaet:["21:00","23:59"] },
 
-      /* >>> EmailJS: deine Werte <<< */
+      /* >>> EmailJS: DEINE IDs <<< */
       EMAIL:{ 
         service:"service_ais7v5f",
-        toTemplate:"template_hnwo39i",        // an Restaurant
-        autoReplyTemplate:"template_m5baprd"  // an Gast (To Email = {{to_email}})
+        toTemplate:"template_m5baprd",       // an Restaurant (To Email = pizza.papa.hamburg@outlook.de)
+        autoReplyTemplate:"template_hnwo39i" // an Gast (To Email = {{to_email}})
       }
     };
 
@@ -437,7 +437,7 @@
     const isHome = v => v && v.__home;
 
     const pad=n=>String(n).padStart(2,'0');
-    const hmToMin = s => { const [h,m]=s.split(':').map(Number); return h*60+(m||0); };
+    const hmToMin = s => { const [h,m]=s.split(':').map(Number); return (h===24 && (m||0)===0) ? 24*60-1 : h*60+(m||0); }; // 24:00 → 23:59
     const minToHm = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
     const clampRange = (start,end, cStart,cEnd) => [Math.max(start,cStart), Math.min(end,cEnd)];
     const fmtDate = d => `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;
@@ -470,7 +470,7 @@
           {label:"Öffnungszeiten",id:"hours",icon:"🕒"},
           {label:"Kontaktdaten",id:"contact",icon:"📞"},
           {label:"Q&As",id:"qas",icon:"❓"}
-        ].forEach(o=>{
+       ].forEach(o=>{
           const b=el("div","ppx-opt",`<span class="ppx-ico">${o.icon}</span><span>${o.label}</span>`);
           b.addEventListener("click",()=>show(o.id)); grid.appendChild(b);
         });
