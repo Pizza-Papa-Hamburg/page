@@ -92,7 +92,7 @@
     .ppx-opt{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:14px;padding:12px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
     .ppx-opt:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.18)}
     .ppx-ico{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#ead09b);color:#0c1f18;font-weight:700;font-size:14px}
-    .ppx-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);cursor:pointer;user-select:none}
+    .ppx-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);cursor:pointer;user-select:none}
     .ppx-pill:hover{transform:translateY(-1px)}
     .ppx-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:14px;padding:12px}
     .ppx-card.compact{padding:8px 10px}
@@ -118,7 +118,6 @@
       transform:translateY(-1px);
     }
 
-    /* Chat Inputs */
     .ppx-input{display:flex;gap:8px;margin-top:8px}
     .ppx-input input, .ppx-input select, .ppx-input textarea{
       width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.28);
@@ -138,7 +137,6 @@
     </div>
   </header>
 
-  <!-- ABOUT -->
   <section id="about">
     <div class="container frame">
       <h2 class="section-title">Unsere Philosophie</h2>
@@ -147,7 +145,6 @@
     </div>
   </section>
 
-  <!-- MENU -->
   <section id="menu">
     <div class="container">
       <h2 class="section-title">Speisekarte</h2>
@@ -230,11 +227,10 @@
     </div>
   </section>
 
-  <!-- GALERIE -->
   <section id="galerie">
     <div class="container frame">
       <h2 class="section-title">Galerie</h2>
-      <div class="section-sub">Bilder können später jederzeit ersetzt werden.</div>
+    <div class="section-sub">Bilder können später jederzeit ersetzt werden.</div>
       <div class="gallery">
         <img src="images/gallery1.jpg" alt="Pizza">
         <img src="images/gallery2.jpg" alt="Pasta">
@@ -244,7 +240,6 @@
     </div>
   </section>
 
-  <!-- KONTAKT -->
   <section id="kontakt">
     <div class="container frame">
       <h2 class="section-title">Reservierung & Kontakt</h2>
@@ -269,7 +264,6 @@
     </div>
   </section>
 
-  <!-- IMPRESSUM -->
   <section id="impressum">
     <div class="container frame">
       <h2 class="section-title">Impressum</h2>
@@ -285,7 +279,6 @@
     </div>
   </section>
 
-  <!-- DATENSCHUTZ -->
   <section id="datenschutz">
     <div class="container frame">
       <h2 class="section-title">Datenschutzerklärung</h2>
@@ -333,7 +326,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
   <script>
-    /* Cookie Consent */
     (function(){
       const KEY='pp-consent';
       const banner=document.getElementById('cookieBanner');
@@ -344,7 +336,6 @@
     })();
   </script>
 
-  <!-- Pizza Papa Lux Bot START -->
   <!-- Launcher -->
   <div class="ppx-launch" id="ppx-launch" role="button" aria-label="Schnellzugriff öffnen">
     <div>Reservieren &amp; mehr ✨</div><div class="ppx-dot">💬</div>
@@ -362,7 +353,7 @@
 
   <script>
   (function(){
-    /* --------- INIT EMAILJS (dein Public Key) --------- */
+    /* --------- INIT EmailJS --------- */
     emailjs.init({ publicKey: '2VkgeLKf9qV0Zf_7E' });
 
     /* --------- CONFIG --------- */
@@ -376,7 +367,6 @@
         ["Sa.","13 - 24 Uhr"],
         ["So.","15 - 21 Uhr"],
       ],
-      /* 0=So … 6=Sa */
       OPEN: {
         1:["11:00","22:00"], 2:["11:00","22:00"], 3:["11:00","22:00"],
         4:["11:00","22:00"], 5:["11:00","22:00"],
@@ -384,15 +374,15 @@
       },
       BUCKETS: { mittag:["12:00","17:30"], frueh:["18:00","20:30"], spaet:["21:00","23:59"] },
 
-      /* >>> EmailJS: deine Werte <<< */
+      /* EmailJS – KORREKT ZUGEORDNET */
       EMAIL:{ 
         service:"service_ais7v5f",
-        toTemplate:"template_hnwo39i",        // an Restaurant
-        autoReplyTemplate:"template_m5baprd"  // an Gast (To Email = {{to_email}})
+        toTemplate:"template_m5baprd",        // 1) an Restaurant (To Email = euer Outlook)
+        autoReplyTemplate:"template_hnwo39i"  // 2) an Gast (To Email = {{to_email}})
       }
     };
 
-    /* --------- DOM & helpers --------- */
+    /* --------- DOM / Helpers --------- */
     const panel  = document.getElementById("ppx-panel");
     const launch = document.getElementById("ppx-launch");
     const close  = document.getElementById("ppx-close");
@@ -444,7 +434,7 @@
     const twoHoursFromNow = () => new Date(Date.now()+2*60*60*1000);
 
     function slotsForDay(date, bucketKey){
-      const dow=date.getDay(); // 0=So
+      const dow=date.getDay();
       const open=CFG.OPEN[dow]; if(!open) return [];
       const [oS,oE]=open.map(hmToMin);
       const [bS0,bE0]=CFG.BUCKETS[bucketKey];
@@ -515,6 +505,7 @@
       pasta:[{id:"aglio",name:"Aglio e Olio",price:"8,00 €",info:"Knoblauch, Olivenöl, Chili – simpel & gut."}],
       salads:[{id:"caesar",name:"Caesar",price:"8,50 €",info:"Römersalat, Croûtons, Parmesan, Caesar-Dressing."}]
     };
+
     async function nodeCategory(catId){
       const label=({pizza:"Pizza",pasta:"Pasta",salads:"Salate"}[catId]||"Kategorie");
       msg(`Gern! Hier ist die Auswahl für ${esc(label)}:`); scroll(); await wait(DELAY.medium);
@@ -522,6 +513,7 @@
       (CFG_DISHES[catId]||[]).forEach(d=>{ const b=el("div","ppx-opt",`<span class="ppx-ico">➤</span><span>${esc(d.name)}</span>`); b.addEventListener("click",()=>show("dish:"+catId+":"+d.id)); grid.appendChild(b); });
       view.append(grid); await wait(50); actions('back',['reserve']); scroll();
     }
+
     async function nodeDish(catId,dishId){
       const dish=(CFG_DISHES[catId]||[]).find(d=>d.id===dishId); if(!dish){ msg("Gericht nicht gefunden."); return; }
       await wait(DELAY.compact);
@@ -659,7 +651,6 @@
       });
     }
 
-    /* --------- Reservation Flow --------- */
     async function flowStart(){
       view.innerHTML="";
       msg("Perfekt – lass uns einen Tisch für dich klarmachen:"); scroll(); await wait(DELAY.medium);
@@ -712,7 +703,7 @@
 
         let firstOk = false;
 
-        // 1) Mail an Restaurant (muss klappen)
+        // 1) an Restaurant
         try {
           await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tpl);
           firstOk = true;
@@ -721,25 +712,23 @@
         }
 
         if (firstOk) {
-          // UI sofort als Erfolg behandeln
+          // Erfolg anzeigen
           msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); scroll();
           await wait(DELAY.short);
           msg('<div class="ppx-card">Hast du sonst noch Fragen?</div>');
           actionsHome(); scroll();
 
-          // 2) Auto-Reply an Gast – Fehler nur loggen
+          // 2) Auto-Reply an Gast (Fehler nur loggen)
           try {
             await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email });
           } catch (err) {
             console.warn('EmailJS (Gast) Error:', err);
           }
         } else {
-          // Erster Send fehlgeschlagen → Fehlermeldung zeigen
           msg('<div class="ppx-card">Ups – das hat leider nicht geklappt. Bitte versuch es später erneut oder nutze <a class="ppx-link" href="mailto:'+esc(CFG.email)+'">E-Mail</a>.</div>');
           actionsHome(); scroll();
         }
 
-        // Button wieder freigeben
         bSend.textContent = "✉️ Anfrage senden";
         bSend.style.pointerEvents = '';
       });
@@ -762,6 +751,5 @@
     close.addEventListener("click", ()=>{ panel.classList.remove("ppx-open"); stack.length=0; current=null; view.innerHTML=""; });
   })();
   </script>
-  <!-- Pizza Papa Lux Bot END -->
 </body>
 </html>
