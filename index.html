@@ -362,10 +362,9 @@
 
   <script>
   (function(){
-/* --------- INIT EMAILJS (dein Public Key) --------- */
-const PUBLIC_KEY = 'J1KTj7-7VJBsV-LHc';
-emailjs.init({ publicKey: PUBLIC_KEY });
-    
+    /* --------- INIT EMAILJS (dein Public Key) --------- */
+    emailjs.init({ publicKey: 'J1KTj7-7VJBsV-LHc' });
+
     /* --------- CONFIG --------- */
     const CFG = {
       brand: "Pizza Papa Hamburg",
@@ -695,57 +694,23 @@ emailjs.init({ publicKey: PUBLIC_KEY });
       const bSend=el('div','ppx-pill','✉️ Anfrage senden');
       controls.append(bHome,bEdit,bSend); view.append(controls); scroll();
 
-   /* ------------ ENTKOPPELTES SENDEN (mit Debug) ------------ */
-function showErr(err){
-  const t = (err?.text || err?.message || JSON.stringify(err)).slice(0,400)
-            .replace(/[<>&]/g, s => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));
-  msg(`<div class="ppx-card">Fehler von EmailJS:<br><small>${t}</small><br>
-       <div style="margin-top:6px">Tipp: EmailJS → Account → Security → Allowed origins (Origin: <code>${location.origin}</code>).</div></div>`);
-  scroll();
-}
+      /* ------------ ENTKOPPELTES SENDEN ------------ */
+      bSend.addEventListener('click', async () => {
+        bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
-bSend.addEventListener('click', async () => {
-  bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
+        const tpl = {
+          date: dateStr,
+          time: `${time} Uhr`,
+          persons: String(persons),
+          name,
+          phone: phone || 'keine Angabe',
+          email,
+          message: wishes || ''
+        };
 
-  const tpl = {
-    date: dateStr,
-    time: `${time} Uhr`,
-    persons: String(persons),
-    name,
-    phone: phone || 'keine Angabe',
-    email,
-    message: wishes || ''
-  };
+        console.log('EmailJS payload:', tpl);
 
-  let firstOk = false;
-
-  try {
-    // → Public Key EXPLIZIT als 4. Parameter
-    await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tpl, PUBLIC_KEY);
-    firstOk = true;
-  } catch (err) {
-    console.error('EmailJS (Restaurant) Error:', err);
-    showErr(err); // ← zeigt echte Ursache im Chat
-  }
-
-  if (firstOk) {
-    // UI sofort als Erfolg behandeln
-    msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); scroll();
-    await wait(DELAY.short);
-    msg('<div class="ppx-card">Hast du sonst noch Fragen?</div>');
-    actionsHome(); scroll();
-
-    // Auto-Reply an Gast (Fehler nur loggen, stört UI nicht)
-    try {
-      await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email }, PUBLIC_KEY);
-    } catch (err) {
-      console.warn('EmailJS (Gast) Error:', err);
-    }
-  }
-
-  bSend.textContent = "✉️ Anfrage senden";
-  bSend.style.pointerEvents = '';
-});
+        let firstOk = false;
 
         // 1) Mail an Restaurant (muss klappen)
         try {
