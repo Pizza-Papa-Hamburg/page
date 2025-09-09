@@ -419,7 +419,18 @@
       b.addEventListener('click',()=>resolve({__home:true}));
       container.appendChild(b);
     }
+    /* NEW: Back-mini helper + isBack */
+    function addBackMini(container, resolve, nodesToRemove=[]){
+      const b=el('div','ppx-mini','← Zurück');
+      b.addEventListener('click',()=>{
+        nodesToRemove.forEach(n=>{ if(n && n.remove) n.remove(); });
+        resolve({__back:true});
+        scroll();
+      });
+      container.appendChild(b);
+    }
     const isHome = v => v && v.__home;
+    const isBack = v => v && v.__back;
 
     const pad=n=>String(n).padStart(2,'0');
     const hmToMin = s => { const [h,m]=s.split(':').map(Number); return (h===24 && (m||0)===0) ? 24*60-1 : h*60+(m||0); };
@@ -523,10 +534,11 @@
         <div class="ppx-minirow"><div class="ppx-mini" id="ppx-date-ok">Weiter →</div></div>`;
       view.append(box); scroll();
       return new Promise(res=>{
-        const row=box.querySelector('.ppx-minirow'); addHomeMini(row,res);
+        const row=box.querySelector('.ppx-minirow');
+        addHomeMini(row,res); /* KEIN "Zurück" beim Datum */
         box.querySelector('#ppx-date-ok').addEventListener('click',()=>{
           const v=box.querySelector('#ppx-date').value; if(!v){ alert('Bitte wähle ein Datum.'); return; }
-          const [y,m,d]=v.split('-').map(Number); res(new Date(y,m-1,d));
+          const [y,m,d]=v.split('-').map(Number); box.remove(); res(new Date(y,m-1,d));
         });
       });
     }
@@ -544,8 +556,9 @@
       const grid=box.querySelector('.ppx-grid'); const mini=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
         addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW: Zurück zu Datum */
         grid.querySelectorAll('.ppx-opt').forEach(b=>{
-          b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>res(b.dataset.k),120); });
+          b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>{ box.classList.add('ppx-appear'); res(b.dataset.k); },120); });
         });
       });
     }
@@ -553,17 +566,26 @@
     function askTime(date,bucket){
       const slots=slotsForDay(date,bucket);
       const wrap=el('div','ppx-card ppx-appear'); view.append(wrap);
-      if(slots.length===0){ wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit</h4><div>Für diese Tageszeit gibt es heute leider keine Slots.</div><div class="ppx-minirow"></div>`;
-        const mini=wrap.querySelector('.ppx-minirow'); return new Promise(res=>{ addHomeMini(mini,res); });
+      if(slots.length===0){
+        wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit</h4><div>Für diese Tageszeit gibt es heute leider keine Slots.</div><div class="ppx-minirow"></div>`;
+        const mini=wrap.querySelector('.ppx-minirow');
+        return new Promise(res=>{
+          addHomeMini(mini,res);
+          addBackMini(mini,res,[wrap]); /* NEW: Zurück zu Tageszeit */
+        });
       }
       wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit wählen</h4>`;
       const grid=el('div','ppx-grid ppx-appear'); const mini=el('div','ppx-minirow'); view.append(grid,mini); scroll();
+      /* NEW: Auto-Scroll – Uhrzeiten in den Fokus */
+      setTimeout(()=>{ try{ grid.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ scroll(); } }, 50);
+
       return new Promise(res=>{
         addHomeMini(mini,res);
+        addBackMini(mini,res,[wrap,grid,mini]); /* NEW: Zurück zu Tageszeit */
         slots.forEach(t=>{
           const b=el('div','ppx-opt',`<span class="ppx-ico">🕒</span><span>${t} Uhr</span>`);
           b.setAttribute('role','button'); b.setAttribute('aria-pressed','false');
-          b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>res(t),120); });
+          b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>{ wrap.remove(); grid.remove(); mini.remove(); res(t); },120); });
           grid.appendChild(b);
         });
       });
@@ -576,9 +598,12 @@
         <div class="ppx-minirow"><div class="ppx-mini" id="ppx-num-ok">Weiter →</div></div>`;
       view.append(box); scroll();
       return new Promise(res=>{
-        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        const mini=box.querySelector('.ppx-minirow');
+        addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW */
         box.querySelector('#ppx-num-ok').addEventListener('click',()=>{
-          const v=Number(box.querySelector('#ppx-num').value); if(!Number.isFinite(v) || v<min){ alert('Bitte nenne eine Zahl.'); return; } res(v);
+          const v=Number(box.querySelector('#ppx-num').value); if(!Number.isFinite(v) || v<min){ alert('Bitte nenne eine Zahl.'); return; }
+          box.remove(); res(v);
         });
       });
     }
@@ -590,9 +615,12 @@
         <div class="ppx-minirow"><div class="ppx-mini" id="ppx-txt-ok">Weiter →</div></div>`;
       view.append(box); scroll();
       return new Promise(res=>{
-        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        const mini=box.querySelector('.ppx-minirow');
+        addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW */
         box.querySelector('#ppx-txt-ok').addEventListener('click',()=>{
-          const v=box.querySelector('#ppx-txt').value.trim(); if(!v){ alert('Bitte ausfüllen.'); return; } res(v);
+          const v=box.querySelector('#ppx-txt').value.trim(); if(!v){ alert('Bitte ausfüllen.'); return; }
+          box.remove(); res(v);
         });
       });
     }
@@ -608,11 +636,14 @@
       view.append(box); scroll();
       const valid = v => /^[+()\s\-0-9]{6,}$/.test(v||"");
       return new Promise(res=>{
-        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        const mini=box.querySelector('.ppx-minirow');
+        addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW */
         box.querySelector('#ppx-phone-ok').addEventListener('click',()=>{
-          const v=box.querySelector('#ppx-phone').value.trim(); if(!valid(v)){ alert('Bitte gültige Nummer oder „Ohne Telefon weiter“.'); return; } res(v);
+          const v=box.querySelector('#ppx-phone').value.trim(); if(!valid(v)){ alert('Bitte gültige Nummer oder „Ohne Telefon weiter“.'); return; }
+          box.remove(); res(v);
         });
-        box.querySelector('#ppx-phone-skip').addEventListener('click',()=>res(""));
+        box.querySelector('#ppx-phone-skip').addEventListener('click',()=>{ box.remove(); res(""); });
       });
     }
 
@@ -624,9 +655,12 @@
       view.append(box); scroll();
       const valid = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||"");
       return new Promise(res=>{
-        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        const mini=box.querySelector('.ppx-minirow');
+        addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW */
         box.querySelector('#ppx-mail-ok').addEventListener('click',()=>{
-          const v=box.querySelector('#ppx-mail').value.trim(); if(!valid(v)){ alert('Bitte gib eine gültige E-Mail an.'); return; } res(v);
+          const v=box.querySelector('#ppx-mail').value.trim(); if(!valid(v)){ alert('Bitte gib eine gültige E-Mail an.'); return; }
+          box.remove(); res(v);
         });
       });
     }
@@ -638,37 +672,86 @@
         <div class="ppx-minirow"><div class="ppx-mini" id="ppx-area-ok">Weiter →</div></div>`;
       view.append(box); scroll();
       return new Promise(res=>{
-        addHomeMini(box.querySelector('.ppx-minirow'),res);
-        box.querySelector('#ppx-area-ok').addEventListener('click',()=>res(box.querySelector('#ppx-area').value.trim()));
+        const mini=box.querySelector('.ppx-minirow');
+        addHomeMini(mini,res);
+        addBackMini(mini,res,[box]); /* NEW */
+        box.querySelector('#ppx-area-ok').addEventListener('click',()=>{ const v=box.querySelector('#ppx-area').value.trim(); box.remove(); res(v); });
       });
     }
 
-    /* --------- Reservation Flow --------- */
+    /* --------- Reservation Flow (mit Zurück) --------- */
     async function flowStart(){
       view.innerHTML="";
       msg("Perfekt – lass uns einen Tisch für dich klarmachen:"); scroll(); await wait(DELAY.medium);
 
       const today = new Date();
+      const state = {};
+      const steps = ['date','bucket','time','persons','name','phone','email','wishes'];
+      let i = 0;
 
-      let step;
-      step = await askDate(today);            if(isHome(step)) return show('root'); const date=step; const dateStr=fmtDate(date);
-      step = await askBucket(date);           if(isHome(step)) return show('root'); const bucket=step;
-      step = await askTime(date,bucket);      if(isHome(step)||!step) return show('root'); const time=step;
-      step = await askNumber("Wie viele Personen?"); if(isHome(step)) return show('root'); const persons=step;
-      step = await askText("Dein Name","Vor- und Nachname"); if(isHome(step)) return show('root'); const name=step;
-      step = await askPhone();                if(isHome(step)) return show('root'); const phone=step;
-      step = await askEmail();                if(isHome(step)) return show('root'); const email=step;
-      step = await askTextarea("Sonstige Wünsche (optional)","Kinderstuhl, Allergien, Anlass …"); if(isHome(step)) return show('root'); const wishes=step;
+      while(i < steps.length){
+        let stepVal;
+        switch(steps[i]){
+          case 'date':
+            stepVal = await askDate(today);
+            if(isHome(stepVal)) return show('root');
+            state.date = stepVal; i++; break;
 
+          case 'bucket':
+            stepVal = await askBucket(state.date);
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.bucket = stepVal; i++; break;
+
+          case 'time':
+            stepVal = await askTime(state.date, state.bucket);
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            if(!stepVal) { return show('root'); }
+            state.time = stepVal; i++; break;
+
+          case 'persons':
+            stepVal = await askNumber("Wie viele Personen?");
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.persons = stepVal; i++; break;
+
+          case 'name':
+            stepVal = await askText("Dein Name","Vor- und Nachname");
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.name = stepVal; i++; break;
+
+          case 'phone':
+            stepVal = await askPhone();
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.phone = stepVal; i++; break;
+
+          case 'email':
+            stepVal = await askEmail();
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.email = stepVal; i++; break;
+
+          case 'wishes':
+            stepVal = await askTextarea("Sonstige Wünsche (optional)","Kinderstuhl, Allergien, Anlass …");
+            if(isHome(stepVal)) return show('root');
+            if(isBack(stepVal)){ i--; break; }
+            state.wishes = stepVal; i++; break;
+        }
+      }
+
+      const dateStr=fmtDate(state.date);
       const summary=el('div','ppx-card ppx-appear',`
         <h4 class="ppx-heading">Zusammenfassung</h4>
         <div><strong>Datum:</strong> ${esc(dateStr)}</div>
-        <div><strong>Uhrzeit:</strong> ${esc(time)} Uhr</div>
-        <div><strong>Personen:</strong> ${esc(persons)}</div>
-        <div><strong>Name:</strong> ${esc(name)}</div>
-        <div><strong>Telefon:</strong> ${esc(phone||'–')}</div>
-        <div><strong>E-Mail:</strong> ${esc(email)}</div>
-        ${wishes?`<div><strong>Wünsche:</strong> ${esc(wishes)}</div>`:''}
+        <div><strong>Uhrzeit:</strong> ${esc(state.time)} Uhr</div>
+        <div><strong>Personen:</strong> ${esc(state.persons)}</div>
+        <div><strong>Name:</strong> ${esc(state.name)}</div>
+        <div><strong>Telefon:</strong> ${esc(state.phone||'–')}</div>
+        <div><strong>E-Mail:</strong> ${esc(state.email)}</div>
+        ${state.wishes?`<div><strong>Wünsche:</strong> ${esc(state.wishes)}</div>`:''}
       `);
       view.append(summary);
 
@@ -686,23 +769,23 @@
         scroll();
       }
 
-      /* EINZIGE Versand-Sequenz – ohne 4. Parameter */
+      /* Versand – ohne 4. Parameter */
       bSend.addEventListener('click', async () => {
         bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
         const tplBase = {
           date: dateStr,
-          time: `${time} Uhr`,
-          persons: String(persons),
-          name,
-          phone: phone || 'keine Angabe',
-          email,
-          message: wishes || ''
+          time: `${state.time} Uhr`,
+          persons: String(state.persons),
+          name: state.name,
+          phone: state.phone || 'keine Angabe',
+          email: state.email,
+          message: state.wishes || ''
         };
 
         try {
           // 1) Mail an Restaurant (Reply-To = Gast)
-          const tplToRestaurant = { ...tplBase, reply_to: email };
+          const tplToRestaurant = { ...tplBase, reply_to: state.email };
           await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tplToRestaurant);
 
           // UI: Erfolg
@@ -714,7 +797,7 @@
           scroll();
 
           // 2) Auto-Reply an Gast – Fehler nur loggen
-          const tplToGuest = { ...tplBase, to_email: email, reply_to: CFG.email };
+          const tplToGuest = { ...tplBase, to_email: state.email, reply_to: CFG.email };
           try {
             await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, tplToGuest);
           } catch (err) {
