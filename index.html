@@ -347,7 +347,7 @@
   <script>
   (function(){
     /* --------- INIT EMAILJS --------- */
-    const PUBLIC_KEY = 'J1KTj7-7VJBsV-LHc';
+    const PUBLIC_KEY = 'J1KTj7-7VJBsV-LHc'; // dein echter Public Key
     emailjs.init({ publicKey: PUBLIC_KEY });
 
     /* --------- CONFIG --------- */
@@ -422,7 +422,7 @@
     const isHome = v => v && v.__home;
 
     const pad=n=>String(n).padStart(2,'0');
-    const hmToMin = s => { const [h,m]=s.split(':').map(Number); return (h===24 && (m||0)===0) ? 24*60-1 : h*60+(m||0); }; // 24:00 → 23:59
+    const hmToMin = s => { const [h,m]=s.split(':').map(Number); return (h===24 && (m||0)===0) ? 24*60-1 : h*60+(m||0); };
     const minToHm = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
     const clampRange = (start,end, cStart,cEnd) => [Math.max(start,cStart), Math.min(end,cEnd)];
     const fmtDate = d => `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;
@@ -678,16 +678,15 @@
       const bSend=el('div','ppx-pill','✉️ Anfrage senden');
       controls.append(bHome,bEdit,bSend); view.append(controls); scroll();
 
-      /* Debug/Fehleranzeige */
       function showErr(err){
-        const t = (err?.text || err?.message || JSON.stringify(err)).slice(0,400)
-                  .replace(/[<>&]/g, s => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));
+        const t=(err?.text||err?.message||JSON.stringify(err)).slice(0,400)
+          .replace(/[<>&]/g,s=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));
         msg(`<div class="ppx-card">Fehler von EmailJS:<br><small>${t}</small><br>
              <div style="margin-top:6px">Tipp: EmailJS → Account → Security → Allowed origins (<code>${location.origin}</code> zulassen).</div></div>`);
         scroll();
       }
 
-      /* EINZIGE Versand-Sequenz */
+      /* EINZIGE Versand-Sequenz – ohne 4. Parameter */
       bSend.addEventListener('click', async () => {
         bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
@@ -704,20 +703,20 @@
         try {
           // 1) Mail an Restaurant (Reply-To = Gast)
           const tplToRestaurant = { ...tplBase, reply_to: email };
-          await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tplToRestaurant, PUBLIC_KEY);
+          await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tplToRestaurant);
 
           // UI: Erfolg
-          msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); 
+          msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>');
           scroll();
           await wait(DELAY.short);
           msg('<div class="ppx-card">Hast du sonst noch Fragen?</div>');
-          actionsHome(); 
+          actionsHome();
           scroll();
 
           // 2) Auto-Reply an Gast – Fehler nur loggen
           const tplToGuest = { ...tplBase, to_email: email, reply_to: CFG.email };
           try {
-            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, tplToGuest, PUBLIC_KEY);
+            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, tplToGuest);
           } catch (err) {
             console.warn('EmailJS (Gast) Error:', err);
           }
