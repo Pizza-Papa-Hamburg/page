@@ -386,7 +386,6 @@
 
     const el=(t,c,h)=>{const n=document.createElement(t);if(c)n.className=c;if(h!=null)n.innerHTML=h;return n;};
     const scroll=()=>view.scrollTop=view.scrollHeight;
-    const focusEl=(node)=>{ try{ node.scrollIntoView({behavior:'smooth', block:'start'}); } catch(e){ scroll(); } };
     const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
     const msg=h=>view.append(el("div","ppx-m ppx-bot ppx-appear",h));
     const closeP=()=>panel.classList.remove("ppx-open");
@@ -415,15 +414,12 @@
       container.querySelectorAll(selector).forEach(n=>{ n.classList.remove('ppx-selected'); n.setAttribute('aria-pressed','false'); });
       target.classList.add('ppx-selected'); target.setAttribute('aria-pressed','true');
     }
-
-    // Old helpers kept for compatibility
     function addHomeMini(container, resolve){
       const b=el('div','ppx-mini','⟲ Zum Anfang');
       b.addEventListener('click',()=>resolve({__home:true}));
       container.appendChild(b);
     }
     const isHome = v => v && v.__home;
-    const isBack = v => v && v.__back;
 
     const pad=n=>String(n).padStart(2,'0');
     const hmToMin = s => { const [h,m]=s.split(':').map(Number); return (h===24 && (m||0)===0) ? 24*60-1 : h*60+(m||0); };
@@ -519,22 +515,19 @@
       </div><div class="ppx-desc">${esc(dish.info)}</div></div>`); actions('back',['reserve']); scroll();
     }
 
-    /* ---------- ASK HELPERS (mit Zurück & Home) ---------- */
-    function mini(label, onClick){ const b=el('div','ppx-mini',label); b.addEventListener('click', onClick); return b; }
-
     function askDate(minDate){
       const box=el('div','ppx-card ppx-appear');
       const minAttr=`${minDate.getFullYear()}-${String(minDate.getMonth()+1).padStart(2,'0')}-${String(minDate.getDate()).padStart(2,'0')}`;
       box.innerHTML=`<h4 class="ppx-heading">Datum wählen</h4>
         <div class="ppx-input"><input id="ppx-date" type="date" min="${minAttr}"></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow"><div class="ppx-mini" id="ppx-date-ok">Weiter →</div></div>`;
       view.append(box); scroll();
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Weiter →', ()=>{ const v=box.querySelector('#ppx-date').value; if(!v){ alert('Bitte wähle ein Datum.'); return; } const [y,m,d]=v.split('-').map(Number); res(new Date(y,m-1,d)); })
-        );
+        const row=box.querySelector('.ppx-minirow'); addHomeMini(row,res);
+        box.querySelector('#ppx-date-ok').addEventListener('click',()=>{
+          const v=box.querySelector('#ppx-date').value; if(!v){ alert('Bitte wähle ein Datum.'); return; }
+          const [y,m,d]=v.split('-').map(Number); res(new Date(y,m-1,d));
+        });
       });
     }
 
@@ -548,15 +541,9 @@
         </div>
         <div class="ppx-minirow"></div>`;
       view.append(box); scroll();
-
-      const grid=box.querySelector('.ppx-grid'); const miniRow=box.querySelector('.ppx-minirow');
+      const grid=box.querySelector('.ppx-grid'); const mini=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        // Back + Home
-        miniRow.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); })
-        );
-        // Options
+        addHomeMini(mini,res);
         grid.querySelectorAll('.ppx-opt').forEach(b=>{
           b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>res(b.dataset.k),120); });
         });
@@ -565,64 +552,34 @@
 
     function askTime(date,bucket){
       const slots=slotsForDay(date,bucket);
-      const wrap=el('div','ppx-card ppx-appear');
-      if(slots.length===0){
-        wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit</h4><div>Für diese Tageszeit gibt es heute leider keine Slots.</div><div class="ppx-minirow"></div>`;
-        const miniRow=wrap.querySelector('.ppx-minirow');
-        miniRow.append(
-          mini('← Zurück', ()=>{ wrap.remove(); }),
-          mini('⟲ Zum Anfang', ()=>{ wrap.remove(); })
-        );
-        view.append(wrap); scroll(); focusEl(wrap);
-        return new Promise(res=>{
-          miniRow.children[0].addEventListener('click',()=>res({__back:true}));
-          miniRow.children[1].addEventListener('click',()=>res({__home:true}));
-        });
+      const wrap=el('div','ppx-card ppx-appear'); view.append(wrap);
+      if(slots.length===0){ wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit</h4><div>Für diese Tageszeit gibt es heute leider keine Slots.</div><div class="ppx-minirow"></div>`;
+        const mini=wrap.querySelector('.ppx-minirow'); return new Promise(res=>{ addHomeMini(mini,res); });
       }
-
-      // Build full block (heading + grid + mini) inside wrap
-      const head=el('h4','ppx-heading','Uhrzeit wählen');
-      const grid=el('div','ppx-grid ppx-appear');
-      const miniRow=el('div','ppx-minirow','');
-      miniRow.append(
-        mini('← Zurück', ()=>{ wrap.remove(); }),
-        mini('⟲ Zum Anfang', ()=>{ wrap.remove(); })
-      );
-      wrap.append(head,grid,miniRow);
-      view.append(wrap);
-
-      // Fill slots
-      slots.forEach(t=>{
-        const b=el('div','ppx-opt',`<span class="ppx-ico">🕒</span><span>${t} Uhr</span>`);
-        b.setAttribute('role','button'); b.setAttribute('aria-pressed','false');
-        b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>resolver(t),120); });
-        grid.appendChild(b);
+      wrap.innerHTML=`<h4 class="ppx-heading">Uhrzeit wählen</h4>`;
+      const grid=el('div','ppx-grid ppx-appear'); const mini=el('div','ppx-minirow'); view.append(grid,mini); scroll();
+      return new Promise(res=>{
+        addHomeMini(mini,res);
+        slots.forEach(t=>{
+          const b=el('div','ppx-opt',`<span class="ppx-ico">🕒</span><span>${t} Uhr</span>`);
+          b.setAttribute('role','button'); b.setAttribute('aria-pressed','false');
+          b.addEventListener('click',()=>{ selectInGroup(grid,'.ppx-opt',b); setTimeout(()=>res(t),120); });
+          grid.appendChild(b);
+        });
       });
-
-      scroll(); focusEl(wrap); // <<< Auto-Fokus auf die Uhrzeiten
-
-      let resolver;
-      const p=new Promise(res=>{
-        resolver=res;
-        miniRow.children[0].addEventListener('click',()=>res({__back:true}));
-        miniRow.children[1].addEventListener('click',()=>res({__home:true}));
-      });
-      return p;
     }
 
     function askNumber(label,min=1){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
         <div class="ppx-input"><input id="ppx-num" type="number" min="${min}" value="${min}" placeholder="Zahl eingeben…"></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow"><div class="ppx-mini" id="ppx-num-ok">Weiter →</div></div>`;
       view.append(box); scroll();
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Weiter →', ()=>{ const v=Number(box.querySelector('#ppx-num').value); if(!Number.isFinite(v) || v<min){ alert('Bitte nenne eine Zahl.'); return; } res(v); })
-        );
+        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        box.querySelector('#ppx-num-ok').addEventListener('click',()=>{
+          const v=Number(box.querySelector('#ppx-num').value); if(!Number.isFinite(v) || v<min){ alert('Bitte nenne eine Zahl.'); return; } res(v);
+        });
       });
     }
 
@@ -630,15 +587,13 @@
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
         <div class="ppx-input"><input id="ppx-txt" type="text" placeholder="${esc(placeholder)}"></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow"><div class="ppx-mini" id="ppx-txt-ok">Weiter →</div></div>`;
       view.append(box); scroll();
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Weiter →', ()=>{ const v=box.querySelector('#ppx-txt').value.trim(); if(!v){ alert('Bitte ausfüllen.'); return; } res(v); })
-        );
+        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        box.querySelector('#ppx-txt-ok').addEventListener('click',()=>{
+          const v=box.querySelector('#ppx-txt').value.trim(); if(!v){ alert('Bitte ausfüllen.'); return; } res(v);
+        });
       });
     }
 
@@ -646,17 +601,18 @@
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">Telefonnummer (optional)</h4>
         <div class="ppx-input"><input id="ppx-phone" type="tel" placeholder="+49 …"></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow">
+          <div class="ppx-mini" id="ppx-phone-ok">Weiter →</div>
+          <div class="ppx-mini" id="ppx-phone-skip">Ohne Telefon weiter</div>
+        </div>`;
       view.append(box); scroll();
       const valid = v => /^[+()\s\-0-9]{6,}$/.test(v||"");
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Ohne Telefon weiter', ()=>{ res(""); }),
-          mini('Weiter →', ()=>{ const v=box.querySelector('#ppx-phone').value.trim(); if(!valid(v)){ alert('Bitte gültige Nummer oder „Ohne Telefon weiter“.'); return; } res(v); })
-        );
+        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        box.querySelector('#ppx-phone-ok').addEventListener('click',()=>{
+          const v=box.querySelector('#ppx-phone').value.trim(); if(!valid(v)){ alert('Bitte gültige Nummer oder „Ohne Telefon weiter“.'); return; } res(v);
+        });
+        box.querySelector('#ppx-phone-skip').addEventListener('click',()=>res(""));
       });
     }
 
@@ -664,16 +620,14 @@
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">E-Mail für die Bestätigung</h4>
         <div class="ppx-input"><input id="ppx-mail" type="email" placeholder="name@example.com"></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow"><div class="ppx-mini" id="ppx-mail-ok">Weiter →</div></div>`;
       view.append(box); scroll();
       const valid = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||"");
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Weiter →', ()=>{ const v=box.querySelector('#ppx-mail').value.trim(); if(!valid(v)){ alert('Bitte gib eine gültige E-Mail an.'); return; } res(v); })
-        );
+        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        box.querySelector('#ppx-mail-ok').addEventListener('click',()=>{
+          const v=box.querySelector('#ppx-mail').value.trim(); if(!valid(v)){ alert('Bitte gib eine gültige E-Mail an.'); return; } res(v);
+        });
       });
     }
 
@@ -681,88 +635,31 @@
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
         <div class="ppx-input"><textarea id="ppx-area" placeholder="${esc(ph)}"></textarea></div>
-        <div class="ppx-minirow"></div>`;
+        <div class="ppx-minirow"><div class="ppx-mini" id="ppx-area-ok">Weiter →</div></div>`;
       view.append(box); scroll();
-      const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        row.append(
-          mini('← Zurück', ()=>{ box.remove(); res({__back:true}); }),
-          mini('⟲ Zum Anfang', ()=>{ box.remove(); res({__home:true}); }),
-          mini('Weiter →', ()=>res(box.querySelector('#ppx-area').value.trim()))
-        );
+        addHomeMini(box.querySelector('.ppx-minirow'),res);
+        box.querySelector('#ppx-area-ok').addEventListener('click',()=>res(box.querySelector('#ppx-area').value.trim()));
       });
     }
 
-    /* --------- Reservation Flow (mit Zurück) --------- */
+    /* --------- Reservation Flow --------- */
     async function flowStart(){
       view.innerHTML="";
       msg("Perfekt – lass uns einen Tisch für dich klarmachen:"); scroll(); await wait(DELAY.medium);
 
       const today = new Date();
-      let date, bucket, time, persons, name, phone, email, wishes;
-      let step = 0;
 
-      while(true){
-        if(step===0){
-          const r = await askDate(today);
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step = Math.max(0, step-1); continue; }
-          date = r; step++;
-          continue;
-        }
-        if(step===1){
-          const r = await askBucket(date);
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          bucket = r; step++;
-          continue;
-        }
-        if(step===2){
-          const r = await askTime(date,bucket);
-          if(!r || isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          time = r; step++;
-          continue;
-        }
-        if(step===3){
-          const r = await askNumber("Wie viele Personen?");
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          persons = r; step++;
-          continue;
-        }
-        if(step===4){
-          const r = await askText("Dein Name","Vor- und Nachname");
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          name = r; step++;
-          continue;
-        }
-        if(step===5){
-          const r = await askPhone();
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          phone = r; step++;
-          continue;
-        }
-        if(step===6){
-          const r = await askEmail();
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          email = r; step++;
-          continue;
-        }
-        if(step===7){
-          const r = await askTextarea("Sonstige Wünsche (optional)","Kinderstuhl, Allergien, Anlass …");
-          if(isHome(r)) return show('root');
-          if(isBack(r)) { step--; continue; }
-          wishes = r; step++;
-          continue;
-        }
-        break;
-      }
+      let step;
+      step = await askDate(today);            if(isHome(step)) return show('root'); const date=step; const dateStr=fmtDate(date);
+      step = await askBucket(date);           if(isHome(step)) return show('root'); const bucket=step;
+      step = await askTime(date,bucket);      if(isHome(step)||!step) return show('root'); const time=step;
+      step = await askNumber("Wie viele Personen?"); if(isHome(step)) return show('root'); const persons=step;
+      step = await askText("Dein Name","Vor- und Nachname"); if(isHome(step)) return show('root'); const name=step;
+      step = await askPhone();                if(isHome(step)) return show('root'); const phone=step;
+      step = await askEmail();                if(isHome(step)) return show('root'); const email=step;
+      step = await askTextarea("Sonstige Wünsche (optional)","Kinderstuhl, Allergien, Anlass …"); if(isHome(step)) return show('root'); const wishes=step;
 
-      const dateStr=fmtDate(date);
       const summary=el('div','ppx-card ppx-appear',`
         <h4 class="ppx-heading">Zusammenfassung</h4>
         <div><strong>Datum:</strong> ${esc(dateStr)}</div>
