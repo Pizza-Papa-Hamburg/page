@@ -211,22 +211,6 @@
           <li><span class="name">Alkoholfreies Bier</span><span class="dots"></span><span class="price">XX €</span></li>
         </ul>
       </div>
-
-      <div class="menu-section frame">
-        <h3 class="menu-title">Desserts</h3>
-        <ul class="menu-list">
-          <li><span class="name">Tiramisu</span><span class="dots"></span><span class="price">XX €</span></li>
-          <li><span class="name">Panna Cotta mit Beerensauce</span><span class="dots"></span><span class="price">XX €</span></li>
-        </ul>
-      </div>
-
-      <div class="menu-section frame">
-        <h3 class="menu-title">Beilagen &amp; Extras</h3>
-        <ul class="menu-list">
-          <li><span class="name">Dips: Aioli / Trüffel-Mayo / Chili</span><span class="dots"></span><span class="price">je XX €</span></li>
-          <li><span class="name">Parmesan / Rucola / Extra Käse</span><span class="dots"></span><span class="price">je XX €</span></li>
-        </ul>
-      </div>
     </div>
   </section>
 
@@ -362,8 +346,9 @@
 
   <script>
   (function(){
-    /* --------- INIT EMAILJS (dein Public Key) --------- */
-    emailjs.init({ publicKey: 'J1KTj7-7VJBsV-LHc' });
+    /* --------- INIT EMAILJS --------- */
+    const PUBLIC_KEY = 'J1KTj7-7VJBsV-LHc';
+    emailjs.init({ publicKey: PUBLIC_KEY });
 
     /* --------- CONFIG --------- */
     const CFG = {
@@ -384,11 +369,11 @@
       },
       BUCKETS: { mittag:["12:00","17:30"], frueh:["18:00","20:30"], spaet:["21:00","23:59"] },
 
-      /* >>> EmailJS: DEINE IDs <<< */
+      /* EmailJS IDs */
       EMAIL:{ 
         service:"service_ais7v5f",
-        toTemplate:"template_m5baprd",       // an Restaurant (To Email = pizza.papa.hamburg@outlook.de)
-        autoReplyTemplate:"template_hnwo39i" // an Gast (To Email = {{to_email}})
+        toTemplate:"template_m5baprd",       // an Restaurant
+        autoReplyTemplate:"template_hnwo39i" // an Gast
       }
     };
 
@@ -470,7 +455,7 @@
           {label:"Öffnungszeiten",id:"hours",icon:"🕒"},
           {label:"Kontaktdaten",id:"contact",icon:"📞"},
           {label:"Q&As",id:"qas",icon:"❓"}
-       ].forEach(o=>{
+        ].forEach(o=>{
           const b=el("div","ppx-opt",`<span class="ppx-ico">${o.icon}</span><span>${o.label}</span>`);
           b.addEventListener("click",()=>show(o.id)); grid.appendChild(b);
         });
@@ -537,9 +522,8 @@
         <div class="ppx-input"><input id="ppx-date" type="date" min="${minAttr}"></div>
         <div class="ppx-minirow"><div class="ppx-mini" id="ppx-date-ok">Weiter →</div></div>`;
       view.append(box); scroll();
-      let resolver; const row=box.querySelector('.ppx-minirow');
       return new Promise(res=>{
-        resolver=res; addHomeMini(row,resolver);
+        const row=box.querySelector('.ppx-minirow'); addHomeMini(row,res);
         box.querySelector('#ppx-date-ok').addEventListener('click',()=>{
           const v=box.querySelector('#ppx-date').value; if(!v){ alert('Bitte wähle ein Datum.'); return; }
           const [y,m,d]=v.split('-').map(Number); res(new Date(y,m-1,d));
@@ -665,8 +649,8 @@
       msg("Perfekt – lass uns einen Tisch für dich klarmachen:"); scroll(); await wait(DELAY.medium);
 
       const today = new Date();
-      let step;
 
+      let step;
       step = await askDate(today);            if(isHome(step)) return show('root'); const date=step; const dateStr=fmtDate(date);
       step = await askBucket(date);           if(isHome(step)) return show('root'); const bucket=step;
       step = await askTime(date,bucket);      if(isHome(step)||!step) return show('root'); const time=step;
@@ -694,11 +678,20 @@
       const bSend=el('div','ppx-pill','✉️ Anfrage senden');
       controls.append(bHome,bEdit,bSend); view.append(controls); scroll();
 
-      /* ------------ ENTKOPPELTES SENDEN ------------ */
+      /* Debug/Fehleranzeige */
+      function showErr(err){
+        const t = (err?.text || err?.message || JSON.stringify(err)).slice(0,400)
+                  .replace(/[<>&]/g, s => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[s]));
+        msg(`<div class="ppx-card">Fehler von EmailJS:<br><small>${t}</small><br>
+             <div style="margin-top:6px">Tipp: EmailJS → Account → Security → Allowed origins (<code>${location.origin}</code> zulassen).</div></div>`);
+        scroll();
+      }
+
+      /* EINZIGE Versand-Sequenz */
       bSend.addEventListener('click', async () => {
         bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
-        const tpl = {
+        const tplBase = {
           date: dateStr,
           time: `${time} Uhr`,
           persons: String(persons),
@@ -708,38 +701,33 @@
           message: wishes || ''
         };
 
-        console.log('EmailJS payload:', tpl);
-
-        let firstOk = false;
-
-        // 1) Mail an Restaurant (muss klappen)
         try {
-          await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tpl);
-          firstOk = true;
-        } catch (err) {
-          console.error('EmailJS (Restaurant) Error:', err);
-        }
+          // 1) Mail an Restaurant (Reply-To = Gast)
+          const tplToRestaurant = { ...tplBase, reply_to: email };
+          await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tplToRestaurant, PUBLIC_KEY);
 
-        if (firstOk) {
-          // UI sofort als Erfolg behandeln
-          msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); scroll();
+          // UI: Erfolg
+          msg('<div class="ppx-card">Super. Du kannst jetzt in deinem E-Mail Postfach nachschauen! 📧</div>'); 
+          scroll();
           await wait(DELAY.short);
           msg('<div class="ppx-card">Hast du sonst noch Fragen?</div>');
-          actionsHome(); scroll();
+          actionsHome(); 
+          scroll();
 
           // 2) Auto-Reply an Gast – Fehler nur loggen
+          const tplToGuest = { ...tplBase, to_email: email, reply_to: CFG.email };
           try {
-            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email });
+            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, tplToGuest, PUBLIC_KEY);
           } catch (err) {
             console.warn('EmailJS (Gast) Error:', err);
           }
-        } else {
-          // Erster Send fehlgeschlagen → Fehlermeldung zeigen
+        } catch (err) {
+          console.error('EmailJS (Restaurant) Error:', err);
+          showErr(err);
           msg('<div class="ppx-card">Ups – das hat leider nicht geklappt. Bitte versuch es später erneut oder nutze <a class="ppx-link" href="mailto:'+esc(CFG.email)+'">E-Mail</a>.</div>');
           actionsHome(); scroll();
         }
 
-        // Button wieder freigeben
         bSend.textContent = "✉️ Anfrage senden";
         bSend.style.pointerEvents = '';
       });
