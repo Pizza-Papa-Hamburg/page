@@ -60,7 +60,6 @@
     .legal-links{margin-top:12px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
     .legal-links a{color:inherit;text-decoration:underline dotted}
 
-    /* -------- OVERRIDES -------- */
     #menu .section-title{color:#ffffff;background:none;border:none;box-shadow:none;padding:0;display:block;position:static;left:auto;transform:none;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.35);}
     #menu .section-sub{color:#ffffff;opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.35);}
     #about .section-title,#galerie .section-title,#kontakt .section-title,#impressum .section-title,#datenschutz .section-title{background:none;border:none;box-shadow:none;padding:0;display:block;position:static;left:auto;transform:none;text-align:center;}
@@ -110,19 +109,9 @@
     .ppx-appear{animation:ppxFade .25s ease both;}
     @keyframes ppxFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
     @media (max-width:640px){.ppx-panel{width:auto;left:22px;right:22px;max-height:85vh}.ppx-v{min-height:60vh}}
-
-    .ppx-opt.ppx-selected, .ppx-pill.ppx-selected{
-      background:rgba(255,255,255,.18);
-      border-color:rgba(255,255,255,.45);
-      box-shadow:0 0 0 2px rgba(201,166,103,.35) inset;
-      transform:translateY(-1px);
-    }
-
+    .ppx-opt.ppx-selected, .ppx-pill.ppx-selected{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.45);box-shadow:0 0 0 2px rgba(201,166,103,.35) inset;transform:translateY(-1px);}
     .ppx-input{display:flex;gap:8px;margin-top:8px}
-    .ppx-input input, .ppx-input select, .ppx-input textarea{
-      width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.28);
-      background:rgba(255,255,255,.1);color:#fff;font-size:15px;outline:none;
-    }
+    .ppx-input input, .ppx-input select, .ppx-input textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-size:15px;outline:none;}
     .ppx-input textarea{min-height:72px;resize:vertical}
     .ppx-minirow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .ppx-mini{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);cursor:pointer;user-select:none}
@@ -137,6 +126,7 @@
     </div>
   </header>
 
+  <!-- ABOUT -->
   <section id="about">
     <div class="container frame">
       <h2 class="section-title">Unsere Philosophie</h2>
@@ -145,6 +135,7 @@
     </div>
   </section>
 
+  <!-- MENU (gekürzt belassen wie gehabt) -->
   <section id="menu">
     <div class="container">
       <h2 class="section-title">Speisekarte</h2>
@@ -227,10 +218,11 @@
     </div>
   </section>
 
+  <!-- GALERIE -->
   <section id="galerie">
     <div class="container frame">
       <h2 class="section-title">Galerie</h2>
-    <div class="section-sub">Bilder können später jederzeit ersetzt werden.</div>
+      <div class="section-sub">Bilder können später jederzeit ersetzt werden.</div>
       <div class="gallery">
         <img src="images/gallery1.jpg" alt="Pizza">
         <img src="images/gallery2.jpg" alt="Pasta">
@@ -240,6 +232,7 @@
     </div>
   </section>
 
+  <!-- KONTAKT -->
   <section id="kontakt">
     <div class="container frame">
       <h2 class="section-title">Reservierung & Kontakt</h2>
@@ -264,46 +257,17 @@
     </div>
   </section>
 
-  <section id="impressum">
-    <div class="container frame">
-      <h2 class="section-title">Impressum</h2>
-      <p class="center small">
-        <strong>Pizza Papa Hamburg</strong><br>
-        Muster Str. XX, YYYYY Musterstadt<br>
-        Telefon: +49 123 456789 · E-Mail: info@pizzapapa.de<br>
-        Vertreten durch: Max Mustermann<br>
-        USt-IdNr.: DE123456789 · Aufsichtsbehörde: Musterbehörde
-      </p>
-      <p class="center small">Inhaltlich Verantwortlicher gem. § 18 Abs. 2 MStV: Max Mustermann (Anschrift wie oben)</p>
-      <p class="center small">Haftung für Inhalte/Links: Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für externe Links. Für den Inhalt verlinkter Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
-    </div>
-  </section>
+  <!-- IMPRESSUM & DATENSCHUTZ (wie gehabt) -->
+  <section id="impressum"><div class="container frame"><h2 class="section-title">Impressum</h2><p class="center small"><strong>Pizza Papa Hamburg</strong><br>Muster Str. XX, YYYYY Musterstadt<br>Telefon: +49 123 456789 · E-Mail: info@pizzapapa.de<br>Vertreten durch: Max Mustermann<br>USt-IdNr.: DE123456789 · Aufsichtsbehörde: Musterbehörde</p><p class="center small">Inhaltlich Verantwortlicher gem. § 18 Abs. 2 MStV: Max Mustermann (Anschrift wie oben)</p><p class="center small">Haftung für Inhalte/Links: Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für externe Links. Für den Inhalt verlinkter Seiten sind ausschließlich deren Betreiber verantwortlich.</p></div></section>
 
-  <section id="datenschutz">
-    <div class="container frame">
-      <h2 class="section-title">Datenschutzerklärung</h2>
-      <p class="small">
-        Diese Website verarbeitet personenbezogene Daten nur, soweit dies zur Bereitstellung der Website erforderlich ist (Art. 6 Abs. 1 lit. f DSGVO). Beim Aufruf werden serverseitig technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt, angeforderte Ressource) in Logfiles verarbeitet und nach kurzer Zeit gelöscht.
-      </p>
-      <p class="small"><strong>Cookies/Tracking:</strong> Es werden keine Tracking-Cookies gesetzt. Es wird lediglich Ihre Auswahl zur Cookie-Einwilligung lokal auf Ihrem Gerät gespeichert (technisch notwendig, keine Übermittlung an Dritte).</p>
-      <p class="small"><strong>Schriften/Fonts:</strong> Zurzeit werden Google Fonts extern geladen. Dadurch kann Ihre IP-Adresse an Google übertragen werden. Für eine vollständig datenschutzfreundliche Lösung empfehlen wir die lokale Einbindung (Self-Hosting) der Schriftarten.</p>
-      <p class="small"><strong>Kontaktaufnahme:</strong> Wenn Sie uns kontaktieren, verarbeiten wir die angegebenen Daten zur Bearbeitung der Anfrage. Die Daten werden nicht ohne Ihre Einwilligung weitergegeben.</p>
-      <p class="small"><strong>Ihre Rechte:</strong> Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: <em>privacy@pizzapapa.de</em>.</p>
-    </div>
-  </section>
+  <section id="datenschutz"><div class="container frame"><h2 class="section-title">Datenschutzerklärung</h2><p class="small">Diese Website verarbeitet personenbezogene Daten nur, soweit dies zur Bereitstellung der Website erforderlich ist (Art. 6 Abs. 1 lit. f DSGVO). Beim Aufruf werden serverseitig technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt, angeforderte Ressource) in Logfiles verarbeitet und nach kurzer Zeit gelöscht.</p><p class="small"><strong>Cookies/Tracking:</strong> Es werden keine Tracking-Cookies gesetzt. Es wird lediglich Ihre Auswahl zur Cookie-Einwilligung lokal auf Ihrem Gerät gespeichert (technisch notwendig, keine Übermittlung an Dritte).</p><p class="small"><strong>Schriften/Fonts:</strong> Zurzeit werden Google Fonts extern geladen. Dadurch kann Ihre IP-Adresse an Google übertragen werden. Für eine vollständig datenschutzfreundliche Lösung empfehlen wir die lokale Einbindung (Self-Hosting) der Schriftarten.</p><p class="small"><strong>Kontaktaufnahme:</strong> Wenn Sie uns kontaktieren, verarbeiten wir die angegebenen Daten zur Bearbeitung der Anfrage. Die Daten werden nicht ohne Ihre Einwilligung weitergegeben.</p><p class="small"><strong>Ihre Rechte:</strong> Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit sowie Beschwerderecht bei einer Aufsichtsbehörde. Kontakt: <em>privacy@pizzapapa.de</em>.</p></div></section>
 
   <footer>
     <p>&copy; 2025 Pizza Papa Hamburg</p>
     <div class="social" aria-label="Social Media">
-      <a href="#" aria-label="Instagram" title="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5zm6.25-3a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 18.25 6.5z"/></svg>
-      </a>
-      <a href="#" aria-label="Facebook" title="Facebook">
-        <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V8.3c0-.9.3-1.5 1.7-1.5H17V4.1c-.3 0-1.3-.1-2.5-.1-2.4 0-4 1.4-4 4v2.9H8v3h2.5v8h3z"/></svg>
-      </a>
-      <a href="#" aria-label="LinkedIn" title="LinkedIn">
-        <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v13H0zM8 8h4.8v1.8h.1c.7-1.2 2.3-2.5 4.8-2.5 5.1 0 6 3.3 6 7.6V21H19v-5.8c0-1.4 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg>
-      </a>
+      <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5zm6.25-3a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 18.25 6.5z"/></svg></a>
+      <a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V8.3c0-.9.3-1.5 1.7-1.5H17V4.1c-.3 0-1.3-.1-2.5-.1-2.4 0-4 1.4-4 4v2.9H8v3h2.5v8h3z"/></svg></a>
+      <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v13H0zM8 8h4.8v1.8h.1c.7-1.2 2.3-2.5 4.8-2.5 5.1 0 6 3.3 6 7.6V21H19v-5.8c0-1.4 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H8V8z"/></svg></a>
     </div>
     <div class="legal-links">
       <a href="#impressum">Impressum</a>
@@ -367,18 +331,12 @@
         ["Sa.","13 - 24 Uhr"],
         ["So.","15 - 21 Uhr"],
       ],
-      OPEN: {
-        1:["11:00","22:00"], 2:["11:00","22:00"], 3:["11:00","22:00"],
-        4:["11:00","22:00"], 5:["11:00","22:00"],
-        6:["13:00","24:00"], 0:["15:00","21:00"]
-      },
+      OPEN: {1:["11:00","22:00"],2:["11:00","22:00"],3:["11:00","22:00"],4:["11:00","22:00"],5:["11:00","22:00"],6:["13:00","24:00"],0:["15:00","21:00"]},
       BUCKETS: { mittag:["12:00","17:30"], frueh:["18:00","20:30"], spaet:["21:00","23:59"] },
-
-      /* EmailJS – KORREKT ZUGEORDNET */
       EMAIL:{ 
         service:"service_ais7v5f",
-        toTemplate:"template_m5baprd",        // 1) an Restaurant (To Email = euer Outlook)
-        autoReplyTemplate:"template_hnwo39i"  // 2) an Gast (To Email = {{to_email}})
+        toTemplate:"template_m5baprd",        // an Restaurant
+        autoReplyTemplate:"template_hnwo39i"  // an Gast (To Email = {{to_email}})
       }
     };
 
@@ -415,17 +373,17 @@
     function done(){ msg('<div class="ppx-card">Danke dir – bis zum nächsten Mal! 👋</div>'); scroll(); setTimeout(()=>{ closeP(); reset(); },900); }
     function back(){ if(stack.length<=1){show("root");return;} stack.pop(); const prev=stack.pop(); show(prev); }
 
+    /* selection helpers */
     function selectInGroup(container, selector, target){
       container.querySelectorAll(selector).forEach(n=>{ n.classList.remove('ppx-selected'); n.setAttribute('aria-pressed','false'); });
       target.classList.add('ppx-selected'); target.setAttribute('aria-pressed','true');
     }
     function addHomeMini(container, resolve){
-      const b=el('div','ppx-mini','⟲ Zum Anfang');
-      b.addEventListener('click',()=>resolve({__home:true}));
-      container.appendChild(b);
+      const b=el('div','ppx-mini','⟲ Zum Anfang'); b.addEventListener('click',()=>resolve({__home:true})); container.appendChild(b);
     }
     const isHome = v => v && v.__home;
 
+    /* time helpers */
     const pad=n=>String(n).padStart(2,'0');
     const hmToMin = s => { const [h,m]=s.split(':').map(Number); return h*60+(m||0); };
     const minToHm = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
@@ -450,6 +408,7 @@
       return out;
     }
 
+    /* Nodes */
     const NODES={
       root(){
         msg(`<div class="ppx-heading">👋 Willkommen bei ${esc(CFG.brand)}!</div><div>Schön, dass du da bist. Wie können wir dir heute helfen?</div>`);
@@ -505,7 +464,6 @@
       pasta:[{id:"aglio",name:"Aglio e Olio",price:"8,00 €",info:"Knoblauch, Olivenöl, Chili – simpel & gut."}],
       salads:[{id:"caesar",name:"Caesar",price:"8,50 €",info:"Römersalat, Croûtons, Parmesan, Caesar-Dressing."}]
     };
-
     async function nodeCategory(catId){
       const label=({pizza:"Pizza",pasta:"Pasta",salads:"Salate"}[catId]||"Kategorie");
       msg(`Gern! Hier ist die Auswahl für ${esc(label)}:`); scroll(); await wait(DELAY.medium);
@@ -513,7 +471,6 @@
       (CFG_DISHES[catId]||[]).forEach(d=>{ const b=el("div","ppx-opt",`<span class="ppx-ico">➤</span><span>${esc(d.name)}</span>`); b.addEventListener("click",()=>show("dish:"+catId+":"+d.id)); grid.appendChild(b); });
       view.append(grid); await wait(50); actions('back',['reserve']); scroll();
     }
-
     async function nodeDish(catId,dishId){
       const dish=(CFG_DISHES[catId]||[]).find(d=>d.id===dishId); if(!dish){ msg("Gericht nicht gefunden."); return; }
       await wait(DELAY.compact);
@@ -522,6 +479,7 @@
       </div><div class="ppx-desc">${esc(dish.info)}</div></div>`); actions('back',['reserve']); scroll();
     }
 
+    /* -------- ask helpers -------- */
     function askDate(minDate){
       const box=el('div','ppx-card ppx-appear');
       const minAttr=`${minDate.getFullYear()}-${String(minDate.getMonth()+1).padStart(2,'0')}-${String(minDate.getDate()).padStart(2,'0')}`;
@@ -538,7 +496,6 @@
         });
       });
     }
-
     function askBucket(date){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">Tageszeit wählen</h4>
@@ -557,7 +514,6 @@
         });
       });
     }
-
     function askTime(date,bucket){
       const slots=slotsForDay(date,bucket);
       const wrap=el('div','ppx-card ppx-appear'); view.append(wrap);
@@ -576,7 +532,6 @@
         });
       });
     }
-
     function askNumber(label,min=1){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
@@ -590,7 +545,6 @@
         });
       });
     }
-
     function askText(label, placeholder="Eingeben…"){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
@@ -604,7 +558,6 @@
         });
       });
     }
-
     function askPhone(){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">Telefonnummer (optional)</h4>
@@ -623,7 +576,6 @@
         box.querySelector('#ppx-phone-skip').addEventListener('click',()=>res(""));
       });
     }
-
     function askEmail(){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">E-Mail für die Bestätigung</h4>
@@ -638,7 +590,6 @@
         });
       });
     }
-
     function askTextarea(label, ph="Optional…"){
       const box=el('div','ppx-card ppx-appear');
       box.innerHTML=`<h4 class="ppx-heading">${esc(label)}</h4>
@@ -651,6 +602,7 @@
       });
     }
 
+    /* --------- Reservation Flow --------- */
     async function flowStart(){
       view.innerHTML="";
       msg("Perfekt – lass uns einen Tisch für dich klarmachen:"); scroll(); await wait(DELAY.medium);
@@ -685,7 +637,7 @@
       const bSend=el('div','ppx-pill','✉️ Anfrage senden');
       controls.append(bHome,bEdit,bSend); view.append(controls); scroll();
 
-      /* ------------ ENTKOPPELTES SENDEN ------------ */
+      /* ------------ SENDEN (breiterer Payload) ------------ */
       bSend.addEventListener('click', async () => {
         bSend.textContent = "Sende…"; bSend.style.pointerEvents = 'none';
 
@@ -693,9 +645,11 @@
           date: dateStr,
           time: `${time} Uhr`,
           persons: String(persons),
-          name,
+          name,                       // {{name}}
+          from_name: name,            // falls Template/Service das nutzt
           phone: phone || 'keine Angabe',
-          email,
+          email,                      // {{email}} (Restaurant-Template)
+          reply_to: email,            // für direkte Antwortfunktion
           message: wishes || ''
         };
 
@@ -708,7 +662,7 @@
           await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.toTemplate, tpl);
           firstOk = true;
         } catch (err) {
-          console.error('EmailJS (Restaurant) Error:', err);
+          console.error('EmailJS (Restaurant) Error:', err && err.text ? err.text : err);
         }
 
         if (firstOk) {
@@ -720,9 +674,13 @@
 
           // 2) Auto-Reply an Gast (Fehler nur loggen)
           try {
-            await emailjs.send(CFG.EMAIL.service, CFG.EMAIL.autoReplyTemplate, { ...tpl, to_email: email });
+            await emailjs.send(
+              CFG.EMAIL.service,
+              CFG.EMAIL.autoReplyTemplate,
+              { ...tpl, to_email: email, to_name: name }
+            );
           } catch (err) {
-            console.warn('EmailJS (Gast) Error:', err);
+            console.warn('EmailJS (Gast) Error:', err && err.text ? err.text : err);
           }
         } else {
           msg('<div class="ppx-card">Ups – das hat leider nicht geklappt. Bitte versuch es später erneut oder nutze <a class="ppx-link" href="mailto:'+esc(CFG.email)+'">E-Mail</a>.</div>');
