@@ -15,7 +15,7 @@ body{
 }
 body::before{
   content:"";position:fixed;inset:0;z-index:-2;
-  background:url('images/brick.jpg') center/cover no-repeat;
+  background:url('../images/brick.jpg') center/cover no-repeat;
   filter:brightness(.82) saturate(.95)
 }
 body::after{
@@ -27,14 +27,14 @@ body::after{
 
 .frame{
   border:2px solid var(--gold);border-radius:var(--radius);
-  background:url('images/paper.jpg') repeat;background-size:auto;
+  background:url('../images/paper.jpg') repeat;background-size:auto;
   box-shadow:var(--shadow)
 }
 
 /* --- Hero ------------------------------------------------------------------ */
 header.hero{
   min-height:60vh;
-  background:url('images/hero.jpg') center/cover no-repeat, linear-gradient(180deg,var(--deep),var(--wine));
+  background:url('../images/hero.jpg') center/cover no-repeat, linear-gradient(180deg,var(--deep),var(--wine));
   display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;position:relative;
   border-bottom:4px double var(--gold)
 }
@@ -89,7 +89,7 @@ ul.menu-list li{display:flex;gap:10px;align-items:center;padding:10px 6px;border
 /* --- Footer ---------------------------------------------------------------- */
 footer{
   border-top:4px double var(--gold);
-  background:url('images/paper.jpg') center/cover repeat;
+  background:url('../images/paper.jpg') center/cover repeat;
   color:var(--ink);text-align:center;padding:26px 16px
 }
 .social{display:flex;gap:16px;justify-content:center;margin-top:10px}
@@ -118,7 +118,7 @@ footer{
 /* --- Cookie Banner --------------------------------------------------------- */
 .cookie-banner{
   position:fixed;z-index:9999;left:16px;right:16px;bottom:16px;display:none;align-items:flex-start;gap:14px;
-  padding:14px 16px;border:2px solid var(--gold);border-radius:12px;background:url('images/paper.jpg') center/cover repeat;box-shadow:var(--shadow)
+  padding:14px 16px;border:2px solid var(--gold);border-radius:12px;background:url('../images/paper.jpg') center/cover repeat;box-shadow:var(--shadow)
 }
 .cookie-banner p{margin:0;font-size:.95rem}
 .cookie-actions{display:flex;gap:10px;margin-left:auto;flex-wrap:wrap}
