@@ -25,13 +25,12 @@
     B.setAttribute('data-block','cf-intro');
 
     var C = D.createElement('div'); C.className='ppx-body'; B.appendChild(C);
-    var scopeIdx = (UI.getScopeIndex ? UI.getScopeIndex() : 1) - 1;
 
     C.appendChild(UI.note('Du möchtest uns gerne eine Nachricht da lassen?'));
     try { UI.keepBottom(); } catch(e){}
 
+    // Wichtig: Hier KEINE navBottom – erst ab der E-Mail-Eingabe anzeigen
     U.delay(renderContactEmail, DLY.step || 450);
-    B.appendChild(UI.navBottom ? UI.navBottom(scopeIdx) : D.createTextNode(''));
   }
 
   // --- email -----------------------------------------------------------------
@@ -40,6 +39,7 @@
     B.setAttribute('data-block','cf-email');
 
     var C = D.createElement('div'); C.className='ppx-body'; B.appendChild(C);
+    // Ab hier Navigationsleiste unten sichtbar (Zurück / Hauptmenü)
     B.appendChild(UI.navBottom ? UI.navBottom((UI.getScopeIndex?UI.getScopeIndex():1)-1) : D.createTextNode(''));
 
     C.appendChild(UI.note('Alles klar – dann brauche ich erstmal deine E-Mail-Adresse.'));
